@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:13.0-alpine
+    environment:
+      POSTGRES_PASSWORD: change_me_later
+      POSTGRES_USER: Dmitrii
+      POSTGRES_DB: sch_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+
+  backend:
+    image: 89639339335/sch_tracker:latest
+    command: ["python3", "bot.py"]
+    restart: always
+    volumes: 
+      - media_value:/app/media/  
+    depends_on:
+      - db  
+    env_file: 
+      - ./.env
+
+volumes: 
+  postgres_data:
+  media_value:
